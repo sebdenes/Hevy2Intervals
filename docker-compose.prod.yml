@@ -1,0 +1,9 @@
+# Production compose override — used on VPS alongside base docker-compose.yml.
+# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+services:
+  hevy-sync:
+    image: ghcr.io/sebdenes/hevy2intervals:latest
+    pull_policy: always
+    environment:
+      - LOG_LEVEL=INFO

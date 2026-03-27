@@ -1,0 +1,23 @@
+services:
+  hevy-sync:
+    build: .
+    container_name: hevy-sync
+    restart: unless-stopped
+    ports:
+      - "${HOST_PORT:-8400}:8400"
+    volumes:
+      - hevy-sync-data:/data
+    env_file:
+      - .env
+    environment:
+      - SYNC_DB_PATH=/data/hevy_icu_sync.db
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8400/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  hevy-sync-data:
+    driver: local
